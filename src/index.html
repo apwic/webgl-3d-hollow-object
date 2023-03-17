@@ -4,5 +4,109 @@
 </head>
 <body>
     <canvas id="canvas" width="800" height="800"></canvas>
+    <table>
+        <tr>
+            <td>
+                <h3>Projection Settings</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Projection Method</label>
+            </td>
+            <td>
+                <button id="orth">Orthographic</button>
+            </td>
+            <td>
+                <button id="obliq">Oblique</button>
+            </td>
+            <td>
+                <button id="persp">Perspective</button>
+        </tr>
+        <tr>
+            <td>
+                <h3>Rotation, Translation, Scaling Settings</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>RotationX</label>
+                <input type="range" id="rotationX" min="-180" max="180" value="0" step="0.01">
+                <output>0</output>
+
+                <label>RotationY</label>
+                <input type="range" id="rotationY" min="-180" max="180" value="0" step="0.01">
+                <output>0</output>
+
+                <label>RotationZ</label>
+                <input type="range" id="rotationZ" min="-180" max="180" value="0" step="0.01">
+                <output>0</output>
+            </td>
+            <td>
+                <label>TranslationX</label>
+                <input type="range" id="translationX" min="-100" max="100" value="0" step="0.01">
+                <output>0</output>
+
+                <label>TranslationY</label>
+                <input type="range" id="translationY" min="-100" max="100" value="0" step="0.01">
+                <output>0</output>
+
+                <label>TranslationZ</label>
+                <input type="range" id="translationZ" min="-100" max="100" value="0" step="0.01">
+                <output>0</output>
+            </td>
+            <td>
+                <label>ScalingX</label>
+                <input type="range" id="scalingX" min="0" max="5" value="0" step="0.1">
+                <output>0</output>
+
+                <label>ScalingY</label>
+                <input type="range" id="scalingY" min="0" max="5" value="0" step="0.1">
+                <output>0</output>
+
+                <label>ScalingZ</label>
+                <input type="range" id="scalingZ" min="0" max="5" value="0" step="0.1">
+                <output>0</output>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Camera Settings</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Camera Radius</label>
+                <input type="range" id="cameraRadius" min="0" max="1" value="0.1" step="0.005">
+                <output>0</output>
+    
+                <label>Camera Angle</label>
+                <input type="range" id="cameraAngle" min="0" max="360" value="30" step="0.005">
+                <output>0</output>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Other Settings</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Enable Shading? : </label>
+                <input type="checkbox" id="isShadingOn" value="isShadingOn" checked>
+            </td>
+            <td>
+                <label>Enable Animation? : </label>
+                <input type="checkbox" id="isAnimationOn" value="isAnimationOn" checked>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="button" value="Reset">
+                <input type="button" value="Save Model">
+                <input type="button" value="Help">
+            </td>
+        </tr>
+    </table>
     <script src="scripts/main.js"></script>
 </body>
