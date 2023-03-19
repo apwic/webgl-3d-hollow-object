@@ -4,16 +4,20 @@ let vertexShader = 'attribute vec3 position;' +
     'uniform mat4 Mmatrix;' +
     'attribute vec3 color;' +
     'varying vec3 vColor;' +
+    'varying float lighting;' +
 
     'void main(void) { ' + 
+    'vec4 transformedPos = Mmatrix * vec4(position.xy, position.z * -1.0, 1.0);' +
     'gl_Position = Pmatrix*Vmatrix*Mmatrix*vec4(position, 1.);' +
     'vColor = color;' +
+    'lighting = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);' +
     '}';
 
 let fragmentShader = 'precision mediump float;' +
     'varying vec3 vColor;' +
+    'varying float lighting;' +
     'void main(void) {' +
-    'gl_FragColor = vec4(vColor, 1.);' +
+    'gl_FragColor = vec4(vColor * lighting, 1.);' +
     '}';
 
 function main() {

@@ -82,7 +82,7 @@ function createShader(gl, type, source) {
         return shader;
     }
 
-    alert("Failed to create shader. Reason: ", gl.getShaderInfoLog(shader));
+    console.log("Failed to create shader. Reason: ", gl.getShaderInfoLog(shader));
     gl.deleteShader(shader);
 }
 
@@ -99,6 +99,6 @@ function createProgram(gl, vertexSource, fragmentSource) {
         return program;
     }
 
-    alert("Failed to create program. Reason: ", gl.getProgramInfoLog(program));
+    console.log("Failed to create program. Reason: ", gl.getProgramInfoLog(program));
     gl.deleteProgram(program);
 }
