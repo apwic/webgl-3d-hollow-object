@@ -1,44 +1,42 @@
-// Vertex-Shader-Script + Flat + Light
-const vertexShaderScript = `
-    attribute vec3 coordinates;
-    uniform float depthFudgeX;
+let vertexShaderLight = 'attribute vec3 position;' +
+    'uniform mat4 Pmatrix;' +
+    'uniform mat4 Tmatrix;' +
+    'attribute vec3 color;' +
+    'varying vec3 vColor;' +
+    'varying float lighting;' +
 
-    uniform mat4 transformationMatrix;
-    uniform mat4 projectionMatrix;
-    varying float vColor;
+    'void main(void) { ' + 
+    'vec4 transformedPos = Tmatrix * vec4(position.xy, position.z * -1.0, 1.0);' +
+    'gl_Position = Pmatrix*transformedPos;' +
+    'vColor = color;' +
+    'lighting = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);' +
+    '}';
 
-    void main(void) {
-        vec4 transformedPostion = transformationMatrix * vec4(coordinates.xy, coordinates.z * -1.0, 1.0);
-        vec4 projectedPosition = projectionMatrix * transformedPostion;
-        if (depthFudgeX < 0.01) {
-            gl_Position = projectedPosition;
-        } else {
-            float zDivider = 2.0 + (projectedPosition.z * depthFudgeX);
-            gl_Position = vec4(projectedPosition.xy / zDivider, projectedPosition.zw);
-        }
-        vColor = min(max((1.0 - transformedPosition.z) / 2.0, 0.0), 1.0);
-    };
-`;
+let fragmentShaderLight = 'precision mediump float;' +
+    'varying vec3 vColor;' +
+    'varying float lighting;' +
+    'void main(void) {' +
+    'gl_FragColor = vec4(vColor * lighting, 1.);' +
+    '}';
 
-const fragmentShaderLight = `
-    precision mediump float;
-    uniform vec3 vColor;
-    varying float colorFactor;
+let vertexShaderFlat = 'attribute vec3 position;' +
+    'uniform mat4 Pmatrix;' +
+    'uniform mat4 Tmatrix;' +
+    'attribute vec3 color;' +
+    'varying vec3 vColor;' +
 
-    void main(void) {
-        gl_FragColor = vec4(vColor * colorFactor, 1.0);
-    };
-`;
+    'void main(void) { ' + 
+    'vec4 transformedPos = Tmatrix * vec4(position.xy, position.z * -1.0, 1.0);' +
+    'gl_Position = Pmatrix*transformedPos;' +
+    'vColor = color;' +
+    '}';
 
-const fragmentShaderFlat = `
-    precision mediump float;
-    uniform vec3 vColor;
-    varying float colorFactor;
+let fragmentShaderFlat = 'precision mediump float;' +
+    'varying vec3 vColor;' +
+    'void main(void) {' +
+    'gl_FragColor = vec4(vColor, 1.);' +
+    '}';
 
-    void main(void) {
-        gl_FragColor = vec4(vColor, 1.0);
-    };
-`;
 
 function createArrayBuffer(gl, array) {
     let arrayBuffer = gl.createBuffer();

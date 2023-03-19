@@ -1,26 +1,68 @@
-let vertexShader = 'attribute vec3 position;' +
-    'uniform mat4 Pmatrix;' +
-    'uniform mat4 Vmatrix;' +
-    'uniform mat4 Mmatrix;' +
-    'attribute vec3 color;' +
-    'varying vec3 vColor;' +
-    'varying float lighting;' +
+let state;
 
-    'void main(void) { ' + 
-    'vec4 transformedPos = Mmatrix * vec4(position.xy, position.z * -1.0, 1.0);' +
-    'gl_Position = Pmatrix*Vmatrix*Mmatrix*vec4(position, 1.);' +
-    'vColor = color;' +
-    'lighting = min(max((1.0 - transformedPos.z) / 2.0, 0.0), 1.0);' +
-    '}';
+function setDefaultState() {
+    state = {
+        model: Cube(1, 0, 0),
 
-let fragmentShader = 'precision mediump float;' +
-    'varying vec3 vColor;' +
-    'varying float lighting;' +
-    'void main(void) {' +
-    'gl_FragColor = vec4(vColor * lighting, 1.);' +
-    '}';
+        transform: {
+            scale: [1, 1, 1],
+        },
+
+        view: {
+            rotation: 60,
+            radius: 0.1
+        },
+
+        enableShader: true,
+        enableAnimation: true,
+    }
+}
+
+function setListeners() {
+    document.getElementById("reset").addEventListener("click", () => {
+        setDefaultState();
+    });
+
+    document.getElementById("scalingX").addEventListener("input", (event) => {
+        state.transform.scale[0] = event.target.value;
+    });
+
+    document.getElementById("scalingY").addEventListener("input", (event) => {
+        state.transform.scale[1] = event.target.value;
+    });
+
+    document.getElementById("scalingZ").addEventListener("input", (event) => {
+        state.transform.scale[2] = event.target.value;
+    });
+
+    document.getElementById("isShadingOn").addEventListener("change", (event) => {
+        state.enableShader = event.target.checked;
+    });
+}
+
+function setTransformMatrix() {
+    let Tmatrix;
+
+    Tmatrix = scaleMatrix(state.transform.scale[0], state.transform.scale[1], state.transform.scale[2]);
+
+    return Tmatrix;
+}
+
+function setViewMatrix() {
+    let Vmatrix;
+
+    Vmatrix = rotateMatrix(0, state.view.rotation * Math.PI / 180, 0);
+    Vmatrix = multiply(Vmatrix, translationMatrix(0, 0, state.view.radius));
+    Vmatrix = inverse(Vmatrix);
+
+    Vmatrix[14] = Vmatrix[14] - 2;
+    return Vmatrix;
+}
 
 function main() {
+    setListeners();
+    document.getElementById("reset").click();
+
     let canvas = document.getElementById("canvas");
     let gl = canvas.getContext("webgl");
     if (!gl) {
@@ -30,59 +72,46 @@ function main() {
         console.log("Rendering context for WebGL is obtained");
     }
     
-    const cube = Cube(1, 0, 0);
-    const shaderProgram = createProgram(gl, vertexShader, fragmentShader);
+    const flatShaderProgram = createProgram(gl, vertexShaderFlat, fragmentShaderFlat);
+    const lightShaderProgram = createProgram(gl, vertexShaderLight, fragmentShaderLight);
+    
+    window.requestAnimationFrame(render);
+    
+    function render() {
+        const vertexBuffer = createArrayBuffer(gl, state.model.exportVertexBuffer());
+        const colorBuffer = createArrayBuffer(gl, state.model.exportColorBuffer());
+        const indexBuffer = createElementBuffer(gl, state.model.exportIndexBuffer());
+        
+        let shaderProgram;
+        if (state.enableShader) {
+            shaderProgram = lightShaderProgram;
+        } else {
+            shaderProgram = flatShaderProgram;
+        }
 
-    const vertexBuffer = createArrayBuffer(gl, cube.exportVertexBuffer());
-    const colorBuffer = createArrayBuffer(gl, cube.exportColorBuffer());
-    const indexBuffer = createElementBuffer(gl, cube.exportIndexBuffer());
+        let Pmatrix = gl.getUniformLocation(shaderProgram, "Pmatrix");
+        let Tmatrix = gl.getUniformLocation(shaderProgram, "Tmatrix");
 
-    bindAttribute(gl, shaderProgram, vertexBuffer, "position");
-    bindAttribute(gl, shaderProgram, colorBuffer, "color");
-
-    gl.useProgram(shaderProgram);
-    enableDepth(gl);
-
-    let Pmatrix = gl.getUniformLocation(shaderProgram, "Pmatrix");
-    let Vmatrix = gl.getUniformLocation(shaderProgram, "Vmatrix");
-    let Mmatrix = gl.getUniformLocation(shaderProgram, "Mmatrix");
-
-    let proj_matrix = get_projection(45, canvas.width / canvas.height, 1, 100);
-    let movement_matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    let view_matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-    view_matrix[14] = view_matrix[14] - 2;
-
-    gl.viewport(0.0, 0.0, canvas.width, canvas.height);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.uniformMatrix4fv(Pmatrix, false, proj_matrix);
-    gl.uniformMatrix4fv(Vmatrix, false, view_matrix);
-    gl.uniformMatrix4fv(Mmatrix, false, movement_matrix);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.drawElements(gl.TRIANGLES, cube.exportIndexBuffer().length, gl.UNSIGNED_SHORT, 0);
-
-    let old_time = 0;
-    let animate = function(new_time) {
-        // The base for the rotation is the current time because time has a constant speed
-        let time_difference = new_time - old_time;
-        rotateZ(movement_matrix, time_difference * 0.0005);
-        rotateY(movement_matrix, time_difference * 0.0002);
-        rotateX(movement_matrix, time_difference * 0.0003);
-        old_time = new_time;
-
+        bindAttribute(gl, shaderProgram, vertexBuffer, "position");
+        bindAttribute(gl, shaderProgram, colorBuffer, "color");
+        
+        gl.useProgram(shaderProgram);
         enableDepth(gl);
-
-        // Setting the viewport and the projection matrix. Then the objects are drawn and animated
+        
+        let proj_matrix = get_projection(45, canvas.width / canvas.height, 1, 100);
+        let transform_matrix = setTransformMatrix();
+        let view_matrix = setViewMatrix();
+        proj_matrix = multiply(proj_matrix, view_matrix);
+        
         gl.viewport(0.0, 0.0, canvas.width, canvas.height);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.uniformMatrix4fv(Pmatrix, false, proj_matrix);
-        gl.uniformMatrix4fv(Vmatrix, false, view_matrix);
-        gl.uniformMatrix4fv(Mmatrix, false, movement_matrix);
+        gl.uniformMatrix4fv(Tmatrix, false, transform_matrix);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-        gl.drawElements(gl.TRIANGLES, cube.exportIndexBuffer().length, gl.UNSIGNED_SHORT, 0);
-
-        window.requestAnimationFrame(animate);
+        gl.drawElements(gl.TRIANGLES, state.model.exportIndexBuffer().length, gl.UNSIGNED_SHORT, 0);
+        
+        window.requestAnimationFrame(render);
     }
-    animate(0);
 }
 
 main();
