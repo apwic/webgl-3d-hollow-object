@@ -23,13 +23,25 @@ function setDefaultState() {
         },
 
         enableShader: true,
-        enableAnimation: true,
+        enableAnimation: false,
     }
 }
 
 function setListeners() {
     document.getElementById("reset").addEventListener("click", () => {
         setDefaultState();
+    });
+
+    document.getElementById("rotationX").addEventListener("input", (event) => {
+        state.transform.rotation.x = Math.round(event.target.value);
+    });
+
+    document.getElementById("rotationY").addEventListener("input", (event) => {
+        state.transform.rotation.y = Math.round(event.target.value);
+    });
+
+    document.getElementById("rotationZ").addEventListener("input", (event) => {
+        state.transform.rotation.z = Math.round(event.target.value);
     });
 
     document.getElementById("scalingX").addEventListener("input", (event) => {
@@ -74,6 +86,20 @@ function setViewMatrix() {
     return Vmatrix;
 }
 
+function startAnimation(time_difference, rot_x, rot_y, rot_z) {
+    state.transform.rotation.x = state.transform.rotation.x > 180? -180 + time_difference * rot_x : state.transform.rotation.x + time_difference * rot_x;
+    state.transform.rotation.y = state.transform.rotation.y > 180? -180 + time_difference * rot_y : state.transform.rotation.y + time_difference * rot_y;
+    state.transform.rotation.z = state.transform.rotation.z > 180? -180 + time_difference * rot_z : state.transform.rotation.z + time_difference * rot_z;
+
+    document.getElementById("rotationX").nextElementSibling.value = Math.round(state.transform.rotation.x);
+    document.getElementById("rotationY").nextElementSibling.value = Math.round(state.transform.rotation.y);
+    document.getElementById("rotationZ").nextElementSibling.value = Math.round(state.transform.rotation.z);
+
+    document.getElementById("rotationX").value = Math.round(state.transform.rotation.x);
+    document.getElementById("rotationY").value = Math.round(state.transform.rotation.y);
+    document.getElementById("rotationZ").value = Math.round(state.transform.rotation.z);
+}
+
 function main() {
     setListeners();
     document.getElementById("reset").click();
@@ -96,9 +122,7 @@ function main() {
         let time_difference = new_time - old_time;
 
         if (state.enableAnimation) {
-            state.transform.rotation.x += time_difference * 0.05;
-            state.transform.rotation.y += time_difference * 0.02;
-            state.transform.rotation.z += time_difference * 0.03;
+            startAnimation(time_difference, 0.05, 0.02, 0.03);
             old_time = new_time;
         }
 

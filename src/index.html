@@ -3,7 +3,7 @@
     <title>Testing WebGL</title>
 </head>
 <body>
-    <canvas id="canvas" width="800" height="800"></canvas>
+    <canvas id="canvas" width="500" height="500"></canvas>
     <table>
         <tr>
             <td>
@@ -31,15 +31,18 @@
         <tr>
             <td>
                 <label>RotationX</label>
-                <input type="range" id="rotationX" min="-180" max="180" value="0" step="0.01">
+                <input type="range" id="rotationX" min="-180" max="180" value="0" step="0.01"
+                    oninput="this.nextElementSibling.value = this.value">
                 <output>0</output>
 
                 <label>RotationY</label>
-                <input type="range" id="rotationY" min="-180" max="180" value="0" step="0.01">
+                <input type="range" id="rotationY" min="-180" max="180" value="0" step="0.01"
+                    oninput="this.nextElementSibling.value = this.value">
                 <output>0</output>
 
                 <label>RotationZ</label>
-                <input type="range" id="rotationZ" min="-180" max="180" value="0" step="0.01">
+                <input type="range" id="rotationZ" min="-180" max="180" value="0" step="0.01"
+                    oninput="this.nextElementSibling.value = this.value">
                 <output>0</output>
             </td>
             <td>
@@ -100,7 +103,7 @@
             </td>
             <td>
                 <label>Enable Animation? : </label>
-                <input type="checkbox" id="isAnimationOn" value="isAnimationOn" checked>
+                <input type="checkbox" id="isAnimationOn" value="isAnimationOn">
             </td>
         </tr>
         <tr>
