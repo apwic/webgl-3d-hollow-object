@@ -18,7 +18,7 @@ function setDefaultState() {
         },
 
         view: {
-            rotation: 60,
+            rotation: 90,
             radius: 0.1
         },
 
@@ -96,9 +96,9 @@ function main() {
         let time_difference = new_time - old_time;
 
         if (state.enableAnimation) {
-            state.transform.rotation.x += time_difference * 0.005;
-            state.transform.rotation.y += time_difference * 0.002;
-            state.transform.rotation.z += time_difference * 0.003;
+            state.transform.rotation.x += time_difference * 0.05;
+            state.transform.rotation.y += time_difference * 0.02;
+            state.transform.rotation.z += time_difference * 0.03;
             old_time = new_time;
         }
 

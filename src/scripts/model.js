@@ -1,19 +1,24 @@
 class Model {
-    constructor(name, outerVertices, innerVertices, outerIndices, innerIndices, colors) {
+    constructor(name, vertices, indices, color) {
         this.name = name;
-        this.outerVertices = outerVertices;
-        this.innerVertices = innerVertices;
-        this.outerIndices = outerIndices;
-        this.innerIndices = innerIndices;
-        this.colors = colors;
+        this.vertices = vertices;
+        this.indices = indices;
+        this.color = color;
+        this.colors = [];
+
+        for (let i = 0; i < this.vertices.length/3; i++) {
+            this.colors.push(this.color[0]);
+            this.colors.push(this.color[1]);
+            this.colors.push(this.color[2]);
+        }
     }
 
     exportVertexBuffer() {
-        return new Float32Array([...this.outerVertices, ...this.innerVertices]);
+        return new Float32Array(this.vertices);
     }
 
     exportIndexBuffer() {
-        return new Uint16Array([...this.outerIndices, ...this.innerIndices]);
+        return new Uint16Array(this.indices);
     }
 
     exportColorBuffer() {
