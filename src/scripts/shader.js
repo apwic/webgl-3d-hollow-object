@@ -65,7 +65,7 @@ function bindAttribute(gl, program, buffer, attr) {
 }
 
 function enableDepth(gl) {
-    gl.clearColor(0.5, 0.5, 0.5, 0.9);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);

@@ -5,7 +5,16 @@ function setDefaultState() {
         model: Cube(1, 0, 0),
 
         transform: {
-            scale: [1, 1, 1],
+            scale: {
+                x: 1,
+                y: 1,
+                z: 1
+            },
+            rotation: {
+                x: 0,
+                y: 0,
+                z: 0
+            }
         },
 
         view: {
@@ -24,26 +33,31 @@ function setListeners() {
     });
 
     document.getElementById("scalingX").addEventListener("input", (event) => {
-        state.transform.scale[0] = event.target.value;
+        state.transform.scale.x = event.target.value;
     });
 
     document.getElementById("scalingY").addEventListener("input", (event) => {
-        state.transform.scale[1] = event.target.value;
+        state.transform.scale.y = event.target.value;
     });
 
     document.getElementById("scalingZ").addEventListener("input", (event) => {
-        state.transform.scale[2] = event.target.value;
+        state.transform.scale.z = event.target.value;
     });
 
     document.getElementById("isShadingOn").addEventListener("change", (event) => {
         state.enableShader = event.target.checked;
+    });
+
+    document.getElementById("isAnimationOn").addEventListener("change", (event) => {
+        state.enableAnimation = event.target.checked;
     });
 }
 
 function setTransformMatrix() {
     let Tmatrix;
 
-    Tmatrix = scaleMatrix(state.transform.scale[0], state.transform.scale[1], state.transform.scale[2]);
+    Tmatrix = scaleMatrix(state.transform.scale.x, state.transform.scale.y, state.transform.scale.z);
+    Tmatrix = multiply(Tmatrix, rotateMatrix(state.transform.rotation.x * Math.PI / 180, state.transform.rotation.y * Math.PI / 180, state.transform.rotation.z * Math.PI / 180));
 
     return Tmatrix;
 }
@@ -55,6 +69,7 @@ function setViewMatrix() {
     Vmatrix = multiply(Vmatrix, translationMatrix(0, 0, state.view.radius));
     Vmatrix = inverse(Vmatrix);
 
+    // change the zoom level
     Vmatrix[14] = Vmatrix[14] - 2;
     return Vmatrix;
 }
@@ -75,9 +90,18 @@ function main() {
     const flatShaderProgram = createProgram(gl, vertexShaderFlat, fragmentShaderFlat);
     const lightShaderProgram = createProgram(gl, vertexShaderLight, fragmentShaderLight);
     
-    window.requestAnimationFrame(render);
-    
-    function render() {
+    // window.requestAnimationFrame(render);
+    let old_time = 0;
+    function render(new_time) {
+        let time_difference = new_time - old_time;
+
+        if (state.enableAnimation) {
+            state.transform.rotation.x += time_difference * 0.005;
+            state.transform.rotation.y += time_difference * 0.002;
+            state.transform.rotation.z += time_difference * 0.003;
+            old_time = new_time;
+        }
+
         const vertexBuffer = createArrayBuffer(gl, state.model.exportVertexBuffer());
         const colorBuffer = createArrayBuffer(gl, state.model.exportColorBuffer());
         const indexBuffer = createElementBuffer(gl, state.model.exportIndexBuffer());
@@ -112,6 +136,7 @@ function main() {
         
         window.requestAnimationFrame(render);
     }
+    render(0);
 }
 
 main();
