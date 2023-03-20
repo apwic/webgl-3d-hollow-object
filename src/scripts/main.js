@@ -89,14 +89,16 @@ function setTransformMatrix() {
         state.transform.scale.x, 
         state.transform.scale.y, 
         state.transform.scale.z);
-    Tmatrix = multiply(Tmatrix, rotateMatrix(
+    Tmatrix = multiply(rotateMatrix(
         state.transform.rotation.x * Math.PI / 180, 
         state.transform.rotation.y * Math.PI / 180, 
-        state.transform.rotation.z * Math.PI / 180));
-    Tmatrix = multiply(Tmatrix, translationMatrix(
+        state.transform.rotation.z * Math.PI / 180),
+        Tmatrix);
+    Tmatrix = multiply(translationMatrix(
         state.transform.translation.x, 
         state.transform.translation.y, 
-        state.transform.translation.z));
+        state.transform.translation.z),
+        Tmatrix);
 
     return Tmatrix;
 }
