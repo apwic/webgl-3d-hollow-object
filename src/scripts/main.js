@@ -14,6 +14,11 @@ function setDefaultState() {
                 x: 0,
                 y: 0,
                 z: 0
+            },
+            translation: {
+                x: 0,
+                y: 0,
+                z: 0
             }
         },
 
@@ -44,6 +49,18 @@ function setListeners() {
         state.transform.rotation.z = Math.round(event.target.value);
     });
 
+    document.getElementById("translationX").addEventListener("input", (event) => {
+        state.transform.translation.x = event.target.value;
+    });
+
+    document.getElementById("translationY").addEventListener("input", (event) => {
+        state.transform.translation.y = event.target.value;
+    });
+
+    document.getElementById("translationZ").addEventListener("input", (event) => {
+        state.transform.translation.z = event.target.value;
+    });
+
     document.getElementById("scalingX").addEventListener("input", (event) => {
         state.transform.scale.x = event.target.value;
     });
@@ -68,8 +85,18 @@ function setListeners() {
 function setTransformMatrix() {
     let Tmatrix;
 
-    Tmatrix = scaleMatrix(state.transform.scale.x, state.transform.scale.y, state.transform.scale.z);
-    Tmatrix = multiply(Tmatrix, rotateMatrix(state.transform.rotation.x * Math.PI / 180, state.transform.rotation.y * Math.PI / 180, state.transform.rotation.z * Math.PI / 180));
+    Tmatrix = scaleMatrix(
+        state.transform.scale.x, 
+        state.transform.scale.y, 
+        state.transform.scale.z);
+    Tmatrix = multiply(Tmatrix, rotateMatrix(
+        state.transform.rotation.x * Math.PI / 180, 
+        state.transform.rotation.y * Math.PI / 180, 
+        state.transform.rotation.z * Math.PI / 180));
+    Tmatrix = multiply(Tmatrix, translationMatrix(
+        state.transform.translation.x, 
+        state.transform.translation.y, 
+        state.transform.translation.z));
 
     return Tmatrix;
 }
