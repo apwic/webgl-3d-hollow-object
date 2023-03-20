@@ -23,12 +23,12 @@ function setDefaultState() {
         },
 
         view: {
-            rotation: 90,
+            rotation: 180,
             radius: 0.1
         },
 
         enableShader: true,
-        enableAnimation: false,
+        enableAnimation: true,
     }
 }
 
@@ -108,7 +108,6 @@ function setViewMatrix() {
 
     Vmatrix = rotateMatrix(0, state.view.rotation * Math.PI / 180, 0);
     Vmatrix = multiply(Vmatrix, translationMatrix(0, 0, state.view.radius));
-    Vmatrix = inverse(Vmatrix);
 
     // change the zoom level
     Vmatrix[14] = Vmatrix[14] - 2;
