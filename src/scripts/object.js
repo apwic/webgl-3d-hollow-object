@@ -272,25 +272,48 @@ const Triangles = (r, g, b) => {
         "TRIANGLES",
         //VERTICES
         [
+            // FIRST TRIANGLE
             // OUTER TRIANGLE FRONT
-            -side/2, 0, depth/4,         // 0
-            side/2, 0, depth/4,          // 1
-            0, side*0.866, depth/4,            // 2
+            -side/2, 0, depth/4,                                // 0
+            side/2, 0, depth/4,                                 // 1
+            0, side*0.866, depth/4,                             // 2
 
             // INNER TRIANGLE FRONT
-            -((side/2)-(depth*3/4)), depth/2, depth/4,         // 3
-            ((side/2)-(depth*3/4)), depth/2, depth/4,          // 4
-            0, (side-depth)*0.866, depth/4,          // 5
+            -((side/2)-(depth*3/4)), depth/2, depth/4,          // 3
+            ((side/2)-(depth*3/4)), depth/2, depth/4,           // 4
+            0, (side-depth)*0.866, depth/4,                     // 5
 
             // OUTER TRIANGLE BACK
-            -side/2, 0, -depth/4,         // 6
-            side/2, 0, -depth/4,          // 7
-            0, side*0.866, -depth/4,            // 8
+            -side/2, 0, -depth/4,                               // 6
+            side/2, 0, -depth/4,                                // 7
+            0, side*0.866, -depth/4,                            // 8
 
             // INNER TRIANGLE BACK
             -((side/2)-(depth*3/4)), depth/2, -depth/4,         // 9
             ((side/2)-(depth*3/4)), depth/2, -depth/4,          // 10
-            0, (side-depth)*0.866, -depth/4,          // 11
+            0, (side-depth)*0.866, -depth/4,                    // 11
+
+            // SECOND TRIANGLE
+            // OUTER TRIANGLE FRONT
+            depth/4, side*0.866-depth, -side/2,                 // 12
+            depth/4, side*0.866-depth, side/2,                  // 13
+            depth/4, -depth, 0,                                 // 14
+
+            // INNER TRIANGLE FRONT
+            depth/4, (side-depth)-depth, -((side/2)-(depth*3/4)),// 15
+            depth/4, (side-depth)-depth, ((side/2)-(depth*3/4)), // 16
+            depth/4, depth*0.866-depth, 0,                      // 17
+
+            // OUTER TRIANGLE BACK
+            -depth/4, side*0.866-depth, -side/2,                 // 12
+            -depth/4, side*0.866-depth, side/2,                  // 13
+            -depth/4, -depth, 0,                                 // 14
+
+            // INNER TRIANGLE BACK
+            -depth/4, (side-depth)-depth, -((side/2)-(depth*3/4)),// 15
+            -depth/4, (side-depth)-depth, ((side/2)-(depth*3/4)), // 16
+            -depth/4, depth*0.866-depth, 0,                      // 17
+
         ],
         //INDICES
         [
@@ -329,6 +352,43 @@ const Triangles = (r, g, b) => {
 
             5, 3, 11,
             3, 11, 9,
+
+            // SECOND TRIANGLE
+            // FRONT
+            12, 15, 13,
+            13, 15, 16,
+            12, 15, 14,
+            14, 15, 17,
+            13, 16, 14,
+            14, 16, 17,
+            
+            // BACK
+            18, 21, 19,
+            19, 21, 22,
+            18, 21, 20,
+            20, 21, 23,
+            19, 22, 20,
+            20, 22, 23,
+
+            // OUTER SIDE
+            12, 13, 18,
+            13, 18, 19,
+            
+            13, 14, 19,
+            14, 19, 20,
+
+            14, 12, 20,
+            12, 20, 18,
+
+            // INNER SIDE
+            15, 16, 21,
+            16, 21, 22,
+
+            16, 17, 22,
+            17, 22, 23,
+
+            17, 15, 23,
+            15, 23, 21,
         ],
         //COLORS
         [r, g, b]
