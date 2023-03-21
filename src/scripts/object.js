@@ -4,7 +4,7 @@ const HollowCube = (r, g, b) => {
         //VERTICES
         [
             -0.5, -0.5, -0.5,       // 0
-            0.5, -0.5, -0.5,        // 0.5
+            0.5, -0.5, -0.5,        // 1
             0.5,  0.5, -0.5,        // 2
             -0.5,  0.5, -0.5,       // 3
             -0.5, -0.5,  0.5,       // 4
@@ -263,3 +263,74 @@ const Cube = (r, g, b) => {
         [r, g, b]
     )
 }
+
+const side = 1;
+const depth = 0.25;
+
+const Triangles = (r, g, b) => {
+    return new Model(
+        "TRIANGLES",
+        //VERTICES
+        [
+            // OUTER TRIANGLE FRONT
+            -side/2, 0, depth/4,         // 0
+            side/2, 0, depth/4,          // 1
+            0, side*0.866, depth/4,            // 2
+
+            // INNER TRIANGLE FRONT
+            -((side/2)-(depth*3/4)), depth/2, depth/4,         // 3
+            ((side/2)-(depth*3/4)), depth/2, depth/4,          // 4
+            0, (side-depth)*0.866, depth/4,          // 5
+
+            // OUTER TRIANGLE BACK
+            -side/2, 0, -depth/4,         // 6
+            side/2, 0, -depth/4,          // 7
+            0, side*0.866, -depth/4,            // 8
+
+            // INNER TRIANGLE BACK
+            -((side/2)-(depth*3/4)), depth/2, -depth/4,         // 9
+            ((side/2)-(depth*3/4)), depth/2, -depth/4,          // 10
+            0, (side-depth)*0.866, -depth/4,          // 11
+        ],
+        //INDICES
+        [
+            // FRONT
+            0, 3, 1,
+            1, 3, 4,
+            0, 3, 2,
+            2, 3, 5,
+            1, 4, 2,
+            2, 4, 5,
+
+            // BACK
+            6, 9, 7,
+            7, 9, 10,
+            6, 9, 8,
+            8, 9, 11,
+            7, 10, 8,
+            8, 10, 11,
+
+            // OUTER SIDE
+            0, 1, 6,
+            1, 6, 7,
+
+            1, 2, 7,
+            2, 7, 8,
+
+            2, 0, 8,
+            0, 8, 6,
+
+            // INNER SIDE
+            3, 4, 9,
+            4, 9, 10,
+
+            4, 5, 10,
+            5, 10, 11,
+
+            5, 3, 11,
+            3, 11, 9,
+        ],
+        //COLORS
+        [r, g, b]
+    );
+};

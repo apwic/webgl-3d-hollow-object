@@ -2,7 +2,7 @@ let state;
 
 function setDefaultState() {
     state = {
-        model: Cube(1, 0, 0),
+        model: Triangles(1, 1, 1),
 
         transform: {
             scale: {
