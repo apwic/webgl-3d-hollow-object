@@ -2,7 +2,9 @@ let state;
 
 function setDefaultState() {
     state = {
-        model: Triangles(1, 1, 1),
+        model: document.getElementById("hollow-cube").checked? HollowCube(1, 1, 1) : 
+                document.getElementById("cube").checked ? Cube(1,1,1) :
+                Triangles(1, 1, 1),
 
         transform: {
             scale: {
@@ -36,6 +38,18 @@ function setListeners() {
     document.getElementById("reset").addEventListener("click", () => {
         setDefaultState();
     });
+
+    document.getElementById("hollow-cube").onclick = () => {
+        state.model = HollowCube(1, 1, 1);
+    };
+
+    document.getElementById("cube").onclick = () => {
+        state.model = Cube(1, 1, 1);
+    };
+
+    document.getElementById("triangles").onclick = () => {
+        state.model = Triangles(1, 1, 1);
+    };
 
     document.getElementById("rotationX").addEventListener("input", (event) => {
         state.transform.rotation.x = Math.round(event.target.value);

@@ -7,7 +7,15 @@
     <div class="container">
         <canvas id="canvas" width="500" height="500"></canvas>
         <div>
-            <h2>Projection Method</h2>
+            <h3>Model</h3>
+            <input type="radio" id="hollow-cube" name="model" value="hollow-cube" checked>
+            <label for="hollow-cube" style="margin-right: 2rem;">Hollow Cube</label>
+            <input type="radio" id="cube" name="model" value="cube">
+            <label for="cube" style="margin-right: 2rem;">Cube</label>
+            <input type="radio" id="triangles" name="model" value="triangles">
+            <label for="triangles">Triangles</label>
+
+            <h3>Projection Method</h3>
             <input type="radio" id="orth" name="projection" value="orth" checked>
             <label for="orth" style="margin-right: 2rem;">Orthographic</label>
             <input type="radio" id="obliq" name="projection" value="obliq">
@@ -15,7 +23,7 @@
             <input type="radio" id="persp" name="projection" value="persp">
             <label for="persp">Perspective</label>
 
-            <h2>Rotation, Translation, Scaling Settings</h2>
+            <h3>Rotation, Translation, Scaling Settings</h3>
             <div class="settings-grid">
                 <div class="row">
                     <div class="col">
@@ -81,7 +89,7 @@
                 </div>
             </div>
 
-            <h2>Camera Settings</h2>
+            <h3>Camera Settings</h3>
             <label for="cameraRadius">Camera Radius</label>
             <input type="range" id="cameraRadius" min="0" max="1" value="0.1" step="0.005">
             <output style="margin-right: 2rem;">0</output>
@@ -90,7 +98,7 @@
             <input type="range" id="cameraAngle" min="0" max="360" value="30" step="0.005">
             <output>0</output>
 
-            <h2>Other Settings</h2>
+            <h3>Other Settings</h3>
             <input type="checkbox" id="isShadingOn" value="isShadingOn" checked>
             <label for="isShadingOn" style="margin-right: 2rem;">Shading</label>
             

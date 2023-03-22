@@ -264,8 +264,8 @@ const Cube = (r, g, b) => {
     )
 }
 
-const side = 1;
-const depth = 0.25;
+const side = 1.2;
+const depth = 0.4;
 
 const Triangles = (r, g, b) => {
     return new Model(
