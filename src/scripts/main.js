@@ -1,13 +1,36 @@
 let state;
 
+function updateUI() {
+    document.getElementById("hollow-cube").checked = true;
+    document.getElementById("orth").checked = true;
+
+    document.getElementById("rotationX").value = state.transform.rotation.x;
+    document.getElementById("rotationY").value = state.transform.rotation.y;
+    document.getElementById("rotationZ").value = state.transform.rotation.z;
+
+    document.getElementById("translationX").value = state.transform.translation.x;
+    document.getElementById("translationY").value = state.transform.translation.y;
+    document.getElementById("translationZ").value = state.transform.translation.z;
+
+    document.getElementById("scalingX").value = state.transform.scale.x;
+    document.getElementById("scalingY").value = state.transform.scale.y;
+    document.getElementById("scalingZ").value = state.transform.scale.z;
+
+    document.getElementById("cameraRadius").value = state.view.radius;
+    document.getElementById("cameraRadius").nextElementSibling.innerHTML = state.view.radius.toFixed(3);
+
+    document.getElementById("cameraAngle").value = state.view.rotation;
+    document.getElementById("cameraAngle").nextElementSibling.innerHTML = state.view.rotation.toFixed(3);
+
+    document.getElementById("isShadingOn").checked = state.enableShader;
+    document.getElementById("isAnimationOn").checked = state.enableAnimation;
+}
+
 function setDefaultState() {
     state = {
-        model: document.getElementById("hollow-cube").checked? HollowCube(1, 1, 1) : 
-                document.getElementById("cube").checked ? Cube(1,1,1) :
-                Triangles(1, 1, 1),
+        model: HollowCube(1, 1, 1),
 
-        projection: document.getElementById("orth").checked? "orth" :
-                    document.getElementById("obliq").checked? "obliq" : "persp",
+        projection: "orth",
 
         transform: {
             scale: {
@@ -29,12 +52,14 @@ function setDefaultState() {
 
         view: {
             rotation: 180,
-            radius: 0.1
+            radius: 0.5
         },
 
-        enableShader: document.getElementById("isShadingOn").checked,
-        enableAnimation: document.getElementById("isAnimationOn").checked,
+        enableShader: true,
+        enableAnimation: true,
     }
+
+    updateUI();
 }
 
 function setListeners() {
