@@ -6,6 +6,9 @@ function setDefaultState() {
                 document.getElementById("cube").checked ? Cube(1,1,1) :
                 Triangles(1, 1, 1),
 
+        projection: document.getElementById("orth").checked? "orth" :
+                    document.getElementById("obliq").checked? "obliq" : "persp",
+
         transform: {
             scale: {
                 x: 1,
@@ -29,8 +32,8 @@ function setDefaultState() {
             radius: 0.1
         },
 
-        enableShader: true,
-        enableAnimation: true,
+        enableShader: document.getElementById("isShadingOn").checked,
+        enableAnimation: document.getElementById("isAnimationOn").checked,
     }
 }
 
@@ -49,6 +52,18 @@ function setListeners() {
 
     document.getElementById("triangles").onclick = () => {
         state.model = Triangles(1, 1, 1);
+    };
+
+    document.getElementById("orth").onclick = () => {
+        state.projection = "orth";
+    };
+
+    document.getElementById("obliq").onclick = () => {
+        state.projection = "obliq";
+    };
+
+    document.getElementById("persp").onclick = () => {
+        state.projection = "persp";
     };
 
     document.getElementById("rotationX").addEventListener("input", (event) => {
@@ -87,12 +102,30 @@ function setListeners() {
         state.transform.scale.z = event.target.value;
     });
 
+    document.getElementById("cameraRadius").addEventListener("input", (event) => {
+        state.view.radius = Number(event.target.value);
+    });
+
+    document.getElementById("cameraAngle").addEventListener("input", (event) => {
+        state.view.rotation = Number(event.target.value);
+    });
+
     document.getElementById("isShadingOn").addEventListener("change", (event) => {
         state.enableShader = event.target.checked;
     });
 
     document.getElementById("isAnimationOn").addEventListener("change", (event) => {
         state.enableAnimation = event.target.checked;
+    });
+
+    document.getElementById("canvas").addEventListener("wheel", (event) => {
+        state.view.radius = Math.max(0, Math.min(1, state.view.radius + event.deltaY / 1000));
+        document.getElementById("cameraRadius").value = state.view.radius;
+        document.getElementById("cameraRadius").nextElementSibling.innerHTML = state.view.radius.toFixed(3);
+    });
+
+    document.getElementById("canvas").addEventListener("mousedown", (event) => {
+        state.view.rotation = state.view.rotation + event.movementX;
     });
 }
 
