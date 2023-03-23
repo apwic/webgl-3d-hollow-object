@@ -26,13 +26,15 @@ class Model {
     }
 
     reset() {
+        this.name = "";
         this.vertices = [];
         this.indices = [];
         this.color = [1, 1, 1];
+        this.colors = [];
     }
 
     appendModel(model, verticesOffset) {
-        let offset = this.vertices.length;
+        let offset = this.vertices.length/3;
         for (let i = 0; i < model.vertices.length; i++) {
             this.vertices.push(model.vertices[i] + verticesOffset);
         }
@@ -40,9 +42,9 @@ class Model {
             this.indices.push(model.indices[i] + offset);
         }
         for (let i = 0; i < model.vertices.length/3; i++) {
-            this.colors.push(this.color[0]);
-            this.colors.push(this.color[1]);
-            this.colors.push(this.color[2]);
+            this.colors.push(model.color[0]);
+            this.colors.push(model.color[1]);
+            this.colors.push(model.color[2]);
         }
     }
 }
