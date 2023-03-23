@@ -2,6 +2,8 @@ let state;
 
 function updateUI() {
     document.getElementById("hollow-cube").checked = true;
+    document.getElementById("cube").checked = false;
+    document.getElementById("triangles").checked = false;
     document.getElementById("orth").checked = true;
 
     document.getElementById("rotationX").value = state.transform.rotation.x;
@@ -30,6 +32,7 @@ function setDefaultState() {
     state = {
         mousedown: false,
         model: HollowCube(1, 1, 1),
+        models: [true, false, false],
 
         projection: "orth",
 
@@ -68,16 +71,31 @@ function setListeners() {
         setDefaultState();
     });
 
-    document.getElementById("hollow-cube").onclick = () => {
+    document.getElementById("hollow-cube").oninput = () => {
         state.model = HollowCube(1, 1, 1);
+        state.models[0] = document.getElementById("hollow-cube").checked;
+        if (!state.models.includes(true)) {
+            state.models[0] = true;
+            document.getElementById("hollow-cube").checked = true;
+        }
     };
 
-    document.getElementById("cube").onclick = () => {
+    document.getElementById("cube").oninput = () => {
         state.model = Cube(1, 1, 1);
+        state.models[1] = document.getElementById("cube").checked;
+        if (!state.models.includes(true)) {
+            state.models[0] = true;
+            document.getElementById("hollow-cube").checked = true;
+        }
     };
 
-    document.getElementById("triangles").onclick = () => {
+    document.getElementById("triangles").oninput = () => {
         state.model = Triangles(1, 1, 1);
+        state.models[2] = document.getElementById("triangles").checked;
+        if (!state.models.includes(true)) {
+            state.models[0] = true;
+            document.getElementById("hollow-cube").checked = true;
+        }
     };
 
     document.getElementById("orth").onclick = () => {
