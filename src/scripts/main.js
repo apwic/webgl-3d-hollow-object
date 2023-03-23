@@ -70,13 +70,16 @@ function updateModel() {
     console.log("update model");
     console.log(state.models);
     state.model.reset();
-    if (state.models[0]) {
-        state.model.appendModel(HollowCube(1, 1, 1), 0);
-    } 
     if (state.models[1]) {
+        console.log("append cube");
         state.model.appendModel(Cube(1, 1, 1), 0.3);
     }
+    if (state.models[0]) {
+        console.log("append hollow cube");
+        state.model.appendModel(HollowCube(1, 1, 1), 0);
+    } 
     if (state.models[2]) {
+        console.log("append triangles");
         state.model.appendModel(Triangles(1, 1, 1), -0.3);
     }
     console.log(state.model);
