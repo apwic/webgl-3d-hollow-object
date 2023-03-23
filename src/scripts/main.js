@@ -28,6 +28,7 @@ function updateUI() {
 
 function setDefaultState() {
     state = {
+        mousedown: false,
         model: HollowCube(1, 1, 1),
 
         projection: "orth",
@@ -150,7 +151,18 @@ function setListeners() {
     });
 
     document.getElementById("canvas").addEventListener("mousedown", (event) => {
-        state.view.rotation = state.view.rotation + event.movementX;
+        state.mousedown = true;
+    });
+
+    document.getElementById("canvas").addEventListener("mouseup", (event) => {
+        state.mousedown = false;
+    });
+
+    document.getElementById("canvas").addEventListener("mousemove", (event) => {
+        if (state.mousedown) {
+            state.transform.rotation.x = Math.round(state.transform.rotation.x - event.movementY);
+            state.transform.rotation.y = Math.round(state.transform.rotation.y - event.movementX);
+        }
     });
 }
 
