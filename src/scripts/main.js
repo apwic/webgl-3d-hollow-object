@@ -67,6 +67,8 @@ function setDefaultState() {
 }
 
 function updateModel() {
+    console.log("update model");
+    console.log(state.models);
     state.model.reset();
     if (state.models[0]) {
         state.model.appendModel(HollowCube(1, 1, 1), 0);
