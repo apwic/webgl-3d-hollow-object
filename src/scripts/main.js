@@ -66,36 +66,50 @@ function setDefaultState() {
     updateUI();
 }
 
+function updateModel() {
+    state.model.reset();
+    if (state.models[0]) {
+        state.model.appendModel(HollowCube(1, 1, 1), 0);
+    } 
+    if (state.models[1]) {
+        state.model.appendModel(Cube(1, 1, 1), 0.3);
+    }
+    if (state.models[2]) {
+        state.model.appendModel(Triangles(1, 1, 1), -0.3);
+    }
+    console.log(state.model);
+}
+
 function setListeners() {
     document.getElementById("reset").addEventListener("click", () => {
         setDefaultState();
     });
 
     document.getElementById("hollow-cube").oninput = () => {
-        state.model = HollowCube(1, 1, 1);
         state.models[0] = document.getElementById("hollow-cube").checked;
         if (!state.models.includes(true)) {
             state.models[0] = true;
             document.getElementById("hollow-cube").checked = true;
         }
+        updateModel();
     };
 
     document.getElementById("cube").oninput = () => {
-        state.model = Cube(1, 1, 1);
         state.models[1] = document.getElementById("cube").checked;
         if (!state.models.includes(true)) {
             state.models[0] = true;
             document.getElementById("hollow-cube").checked = true;
         }
+        updateModel();
     };
 
     document.getElementById("triangles").oninput = () => {
-        state.model = Triangles(1, 1, 1);
         state.models[2] = document.getElementById("triangles").checked;
         if (!state.models.includes(true)) {
             state.models[0] = true;
             document.getElementById("hollow-cube").checked = true;
         }
+        updateModel();
     };
 
     document.getElementById("orth").onclick = () => {

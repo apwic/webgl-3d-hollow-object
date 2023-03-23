@@ -24,4 +24,25 @@ class Model {
     exportColorBuffer() {
         return new Float32Array(this.colors);
     }
+
+    reset() {
+        this.vertices = [];
+        this.indices = [];
+        this.color = [1, 1, 1];
+    }
+
+    appendModel(model, verticesOffset) {
+        let offset = this.vertices.length;
+        for (let i = 0; i < model.vertices.length; i++) {
+            this.vertices.push(model.vertices[i] + verticesOffset);
+        }
+        for (let i = 0; i < model.indices.length; i++) {
+            this.indices.push(model.indices[i] + offset);
+        }
+        for (let i = 0; i < model.vertices.length/3; i++) {
+            this.colors.push(this.color[0]);
+            this.colors.push(this.color[1]);
+            this.colors.push(this.color[2]);
+        }
+    }
 }
