@@ -7,16 +7,25 @@ function updateUI() {
     document.getElementById("orth").checked = true;
 
     document.getElementById("rotationX").value = state.transform.rotation.x;
+    document.getElementById("rotationX").nextElementSibling.value = state.transform.rotation.x;
     document.getElementById("rotationY").value = state.transform.rotation.y;
+    document.getElementById("rotationY").nextElementSibling.value = state.transform.rotation.y;
     document.getElementById("rotationZ").value = state.transform.rotation.z;
+    document.getElementById("rotationZ").nextElementSibling.value = state.transform.rotation.z;
 
     document.getElementById("translationX").value = state.transform.translation.x;
+    document.getElementById("translationX").nextElementSibling.value = state.transform.translation.x;
     document.getElementById("translationY").value = state.transform.translation.y;
+    document.getElementById("translationY").nextElementSibling.value = state.transform.translation.y;
     document.getElementById("translationZ").value = state.transform.translation.z;
+    document.getElementById("translationZ").nextElementSibling.value = state.transform.translation.z;
 
     document.getElementById("scalingX").value = state.transform.scale.x;
+    document.getElementById("scalingX").nextElementSibling.value = state.transform.scale.x;
     document.getElementById("scalingY").value = state.transform.scale.y;
+    document.getElementById("scalingY").nextElementSibling.value = state.transform.scale.y;
     document.getElementById("scalingZ").value = state.transform.scale.z;
+    document.getElementById("scalingZ").nextElementSibling.value = state.transform.scale.z;
 
     document.getElementById("cameraRadius").value = state.view.radius;
     document.getElementById("cameraRadius").nextElementSibling.innerHTML = state.view.radius.toFixed(3);
