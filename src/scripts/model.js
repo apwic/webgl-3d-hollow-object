@@ -47,4 +47,14 @@ class Model {
             this.colors.push(model.color[2]);
         }
     }
+
+    updateColor(color) {
+        this.color = color;
+        this.colors = [];
+        for (let i = 0; i < this.vertices.length/3; i++) {
+            this.colors.push(this.color[0]);
+            this.colors.push(this.color[1]);
+            this.colors.push(this.color[2]);
+        }
+    }
 }

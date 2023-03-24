@@ -14,6 +14,8 @@ function updateUI() {
     document.getElementById("cube").checked = state.models[1];
     document.getElementById("triangles").checked = state.models[2];
 
+    document.getElementById("color").value = rgbToHexColor(state.color);
+
     if (state.projection == "orth") document.getElementById("orth").checked = true;
     if (state.projection == "obliq") document.getElementById("obliq").checked = true;
     if (state.projection == "persp") document.getElementById("persp").checked = true;
@@ -49,6 +51,8 @@ function setDefaultState() {
         mousedown: false,
         model: HollowCube(1, 1, 1),
         models: [true, false, false],
+
+        color: [1, 1, 1],
 
         projection: "orth",
 
@@ -88,15 +92,15 @@ function updateModel() {
     state.model.reset();
     if (state.models[1]) {
         console.log("append cube");
-        state.model.appendModel(Cube(1, 1, 1), 0.3);
+        state.model.appendModel(Cube(state.color[0], state.color[1], state.color[2]), 0.3);
     }
     if (state.models[0]) {
         console.log("append hollow cube");
-        state.model.appendModel(HollowCube(1, 1, 1), 0);
+        state.model.appendModel(HollowCube(state.color[0], state.color[1], state.color[2]), 0);
     } 
     if (state.models[2]) {
         console.log("append triangles");
-        state.model.appendModel(Triangles(1, 1, 1), -0.3);
+        state.model.appendModel(Triangles(state.color[0], state.color[1], state.color[2]), -0.3);
     }
     console.log(state.model);
 }
@@ -225,6 +229,11 @@ function setListeners() {
 
     document.getElementById("load").oninput = (event) => {
         load(event.target.files[0]);
+    };
+
+    document.getElementById("color").oninput = (event) => {
+        state.color = hexToRGBColor(event.target.value);
+        state.model.updateColor(state.color);
     };
 }
 
