@@ -1,17 +1,24 @@
 let state;
 
-function updateUI() {
-    document.getElementById("hollow-cube").checked = true;
-    document.getElementById("cube").checked = false;
-    document.getElementById("triangles").checked = false;
-    document.getElementById("orth").checked = true;
+function updateRotationUI() {
+    document.getElementById("rotationX").value = Math.round(state.transform.rotation.x);
+    document.getElementById("rotationX").nextElementSibling.value = Math.round(state.transform.rotation.x);
+    document.getElementById("rotationY").value = Math.round(state.transform.rotation.y);
+    document.getElementById("rotationY").nextElementSibling.value = Math.round(state.transform.rotation.y);
+    document.getElementById("rotationZ").value = Math.round(state.transform.rotation.z);
+    document.getElementById("rotationZ").nextElementSibling.value = Math.round(state.transform.rotation.z);
+}
 
-    document.getElementById("rotationX").value = state.transform.rotation.x;
-    document.getElementById("rotationX").nextElementSibling.value = state.transform.rotation.x;
-    document.getElementById("rotationY").value = state.transform.rotation.y;
-    document.getElementById("rotationY").nextElementSibling.value = state.transform.rotation.y;
-    document.getElementById("rotationZ").value = state.transform.rotation.z;
-    document.getElementById("rotationZ").nextElementSibling.value = state.transform.rotation.z;
+function updateUI() {
+    document.getElementById("hollow-cube").checked = state.models[0];
+    document.getElementById("cube").checked = state.models[1];
+    document.getElementById("triangles").checked = state.models[2];
+
+    if (state.projection == "orth") document.getElementById("orth").checked = true;
+    if (state.projection == "obliq") document.getElementById("obliq").checked = true;
+    if (state.projection == "persp") document.getElementById("persp").checked = true;
+
+    updateRotationUI();
 
     document.getElementById("translationX").value = state.transform.translation.x;
     document.getElementById("translationX").nextElementSibling.value = state.transform.translation.x;
@@ -208,8 +215,40 @@ function setListeners() {
         if (state.mousedown) {
             state.transform.rotation.x = Math.round(state.transform.rotation.x - event.movementY);
             state.transform.rotation.y = Math.round(state.transform.rotation.y - event.movementX);
+            updateRotationUI();
         }
     });
+
+    document.getElementById("save").addEventListener("click", () => {
+        save();
+    });
+
+    document.getElementById("load").oninput = (event) => {
+        load(event.target.files[0]);
+    };
+}
+
+function load(file) {
+    console.log("load");
+    const reader = new FileReader();
+    reader.readAsText(file,'UTF-8');
+    reader.onload = readerEvent => {
+        const content = readerEvent.target.result;
+        const save = JSON.parse(content);
+        state = save;
+        state.model = new Model(state.model.name, state.model.vertices, state.model.indices, state.model.colors);
+        updateUI();
+    }
+}
+
+function save() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "save.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
 }
 
 function setTransformMatrix() {
