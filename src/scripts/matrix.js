@@ -23,6 +23,50 @@ function get_projection(angle, a, zMin, zMax) {
     ];
 }
 
+function getProjectionMatrix(projectionMethod) {
+    switch(projectionMethod) {
+        case "orth":
+            return [
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1,
+            ]
+        case "obliq": // General oblique projection
+            let a = 30
+            let b = 45
+            let angleA = a * Math.PI / 180;
+            let angleB = b * Math.PI / 180;
+            return [
+                1, 0, -Math.cos(angleA)/Math.sin(angleB),0,
+                0, 1, -Math.cos(angleB)/Math.sin(angleB),0,
+                0, 0, 1, 0,
+                0, 0, 0, 1,
+            ]
+    }
+}
+
+function getPerspectiveProjMatrix(aspectRatio) {
+    const fovRadians = 45 * Math.PI / 180; // From 45 degrees
+    // Assume thtat the near, far plane are 0.1, 100
+    const near = 0.1;
+    const far = 100;
+
+    const tanFOV = Math.tan(fovRadians / 2);
+    const right = near * tanFOV * aspectRatio;
+    const left = -right;
+    const top = near * tanFOV;
+    const bottom = -top;
+
+    // Use Infinite Perspective Projection Matrix
+    return [
+        2 * near / (right - left), 0, 0, 0,
+        0, 2 * near / (top - bottom), (top + bottom)/(top - bottom), 0,
+        0, 0, -(far + near)/(far - near), -2 * far * near / (far - near),
+        0, 0, -1, 0,
+    ]
+}
+
 function scaleMatrix(sx, sy, sz){
     return [
         sx, 0, 0, 0,
