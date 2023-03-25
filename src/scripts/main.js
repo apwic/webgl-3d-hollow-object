@@ -352,10 +352,9 @@ function main() {
         gl.useProgram(shaderProgram);
         enableDepth(gl);
         
-        // let proj_matrix = get_projection(45, canvas.width / canvas.height, 1, 100);
         let proj_matrix;
         if (state.projection == "persp") {
-            proj_matrix = getPerspectiveProjMatrix(canvas.width / canvas.height);
+            proj_matrix = get_projection(45, canvas.width / canvas.height, 1, 100);
         } else {
             proj_matrix = getProjectionMatrix(state.projection)
         }

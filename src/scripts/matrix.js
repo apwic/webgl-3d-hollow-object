@@ -27,14 +27,14 @@ function getProjectionMatrix(projectionMethod) {
     switch(projectionMethod) {
         case "orth":
             return [
-                0.25, 0, 0, 0,
-                0, 0.25, 0, 0,
-                0, 0, 0.25, 0,
-                0, 0, 0, 0.25,
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1,
             ]
         case "obliq": // General oblique projection
-            let a = 15
-            let b = 15
+            let a = 10
+            let b = 10
             let angleA = a * Math.PI / 180;
             let angleB = b * Math.PI / 180;
             return [
