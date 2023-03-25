@@ -355,7 +355,9 @@ function main() {
         let proj_matrix;
         if (state.projection == "persp") {
             proj_matrix = get_projection(45, canvas.width / canvas.height, 1, 100);
-        } else {
+        } else if (state.projection == "ortho") {
+            proj_matrix = getOrthographicProjection(canvas.width / canvas.height);
+        } else { // use oblique projection
             proj_matrix = getObliqueProjection(canvas.width / canvas.height);
         }
         let transform_matrix = setTransformMatrix();

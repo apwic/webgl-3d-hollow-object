@@ -43,6 +43,28 @@ function getObliqueProjection(aspectRatio) {
     ];
 }
 
+function getOrthographicProjection(aspectRatio) {
+    // Assumed near and far are 1 and 100 respectively
+    const near = 1; 
+    const far = 100;
+    const fovyAngle = 45; // in degrees, default
+    const fovy = fovyAngle * Math.PI / 180; // in radians
+    
+    const top = near * Math.tan(fovy / 2);
+    const right = top * aspectRatio;
+    const left = -right;
+    const bottom = -top;
+
+    const shearFactor = 0.5;
+
+    return [
+        2 / (right - left), 0, - shearFactor * Math.cos(fovy) / (right - left), -(right + left) / (right - left),
+        0, 2 / (top - bottom), - shearFactor * Math.sin(fovy) / (top - bottom), -(top + bottom) / (top - bottom),
+        0, 0, -2 / (far - near), -(far + near) / (far - near),
+        0, 0, 0, 1,
+    ];
+}
+
 function scaleMatrix(sx, sy, sz){
     return [
         sx, 0, 0, 0,
