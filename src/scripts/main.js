@@ -54,7 +54,7 @@ function setDefaultState() {
 
         color: [1, 1, 1],
 
-        projection: "orth",
+        projection: "persp",
 
         transform: {
             scale: {
@@ -288,7 +288,7 @@ function setViewMatrix() {
     Vmatrix = multiply(Vmatrix, translationMatrix(0, 0, state.view.radius));
 
     // change the zoom level
-    Vmatrix[14] = Vmatrix[14] - 2;
+    Vmatrix[14] = Vmatrix[14] - 3;
     return Vmatrix;
 }
 
@@ -356,7 +356,7 @@ function main() {
         if (state.projection == "persp") {
             proj_matrix = get_projection(45, canvas.width / canvas.height, 1, 100);
         } else {
-            proj_matrix = getProjectionMatrix(state.projection)
+            proj_matrix = getObliqueProjection(canvas.width / canvas.height);
         }
         let transform_matrix = setTransformMatrix();
         let view_matrix = setViewMatrix();
