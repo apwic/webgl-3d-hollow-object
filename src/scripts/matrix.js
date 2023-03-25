@@ -13,7 +13,7 @@ function multiply(m1, m2) {
     return m3;
 }
 
-function get_projection(angle, a, zMin, zMax) {
+function getPerspectiveProjection(angle, a, zMin, zMax) {
     let ang = Math.tan((angle * .5) * Math.PI / 180);
     return [
         0.5 / ang, 0, 0, 0,
@@ -35,12 +35,23 @@ function getObliqueProjection(aspectRatio) {
     const left = -right;
     const bottom = -top;
 
-    return [
+    const obliqueMatrix = [
         2 / (right - left), 0, 0, -(right + left) / (right - left),
         0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
         0, 0, -2 / (far - near), -(far + near) / (far - near),
         0, 0, 0, 1,
     ];
+
+    const shearFactor = 0.5;
+
+    const shearMatrix = [
+        1, 0, shearFactor, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1,
+    ];
+
+    return multiply(obliqueMatrix, shearMatrix);
 }
 
 function getOrthographicProjection(aspectRatio) {
