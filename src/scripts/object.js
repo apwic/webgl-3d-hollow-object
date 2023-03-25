@@ -264,43 +264,43 @@ const Cube = (r, g, b) => {
 }
 
 const Cylinder = (r, g, b) => {
-    var vertices = [];
+    let vertices = [];
 
     // Outer vertices
-    var r1 = 0.5; // outer radius
-    var r2 = 0.4; // inner radius
-    var height = 1; // height of cylinder
+    let r1 = 0.5; // outer radius
+    let r2 = 0.4; // inner radius
+    let height = 1; // height of cylinder
 
-    for (var i = 0; i <= 360; i += 10) {
-    var angle = i * Math.PI / 180;
-    vertices.push(r1 * Math.cos(angle), height / 2, r1 * Math.sin(angle)); // top outer vertex
-    vertices.push(r1 * Math.cos(angle), -height / 2, r1 * Math.sin(angle)); // bottom outer vertex
-    vertices.push(r2 * Math.cos(angle), height / 2, r2 * Math.sin(angle)); // top inner vertex
-    vertices.push(r2 * Math.cos(angle), -height / 2, r2 * Math.sin(angle)); // bottom inner vertex
+    for (let i = 0; i <= 360; i += 10) {
+        let angle = i * Math.PI / 180;
+        vertices.push(r1 * Math.cos(angle), height / 2, r1 * Math.sin(angle)); // top outer vertex
+        vertices.push(r1 * Math.cos(angle), -height / 2, r1 * Math.sin(angle)); // bottom outer vertex
+        vertices.push(r2 * Math.cos(angle), height / 2, r2 * Math.sin(angle)); // top inner vertex
+        vertices.push(r2 * Math.cos(angle), -height / 2, r2 * Math.sin(angle)); // bottom inner vertex
     }
 
-    var indices = [];
+    let indices = [];
 
     // Top and bottom faces
-    for (var i = 0; i < 36; i++) {
-    indices.push(i * 4 + 2, i * 4, (i + 1) * 4);
-    indices.push(i * 4 + 2, (i + 1) * 4, (i + 1) * 4 + 2);
-    indices.push(i * 4 + 3, i * 4 + 1, (i + 1) * 4 + 1);
-    indices.push(i * 4 + 3, (i + 1) * 4 + 1, (i + 1) * 4 + 3);
-    
-    // Connect the inside vertices to create the inner face
-    indices.push((i + 1) * 4, i * 4, i * 4 + 2);
-    indices.push((i + 1) * 4, i * 4 + 2, (i + 1) * 4 + 2);
-    indices.push((i + 1) * 4 + 1, i * 4 + 1, (i + 1) * 4 + 3);
-    indices.push(i * 4 + 1, (i + 1) * 4 + 3, (i + 1) * 4);
+    for (let i = 0; i < 36; i++) {
+        indices.push(i * 4 + 2, i * 4, (i + 1) * 4);
+        indices.push(i * 4 + 2, (i + 1) * 4, (i + 1) * 4 + 2);
+        indices.push(i * 4 + 3, i * 4 + 1, (i + 1) * 4 + 1);
+        indices.push(i * 4 + 3, (i + 1) * 4 + 1, (i + 1) * 4 + 3);
+        
+        // Connect the inside vertices to create the inner face
+        indices.push((i + 1) * 4, i * 4, i * 4 + 2);
+        indices.push((i + 1) * 4, i * 4 + 2, (i + 1) * 4 + 2);
+        indices.push((i + 1) * 4 + 1, i * 4 + 1, (i + 1) * 4 + 3);
+        indices.push(i * 4 + 1, (i + 1) * 4 + 3, (i + 1) * 4);
     }
 
     // Sides
-    for (var i = 0; i < 36; i++) {
-    indices.push(i * 4, (i + 1) * 4, i * 4 + 1);
-    indices.push((i + 1) * 4, (i + 1) * 4 + 1, i * 4 + 1);
-    indices.push(i * 4 + 2, i * 4 + 3, (i + 1) * 4 + 2);
-    indices.push((i + 1) * 4 + 3, (i + 1) * 4 + 2, i * 4 + 2);
+    for (let i = 0; i < 36; i++) {
+        indices.push(i * 4, (i + 1) * 4, i * 4 + 1);
+        indices.push((i + 1) * 4, (i + 1) * 4 + 1, i * 4 + 1);
+        indices.push(i * 4 + 2, i * 4 + 3, (i + 1) * 4 + 2);
+        indices.push((i + 1) * 4 + 3, (i + 1) * 4 + 2, i * 4 + 2);
     }
 
     return new Model(
