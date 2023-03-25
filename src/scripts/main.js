@@ -10,7 +10,7 @@ function updateRotationUI() {
 }
 
 function updateUI() {
-    document.getElementById("hollow-cube").checked = state.models[0];
+    document.getElementById("cylinder").checked = state.models[0];
     document.getElementById("cube").checked = state.models[1];
     document.getElementById("triangles").checked = state.models[2];
 
@@ -49,7 +49,7 @@ function updateUI() {
 function setDefaultState() {
     state = {
         mousedown: false,
-        model: HollowCube(1, 1, 1),
+        model: Cylinder(1, 1, 1),
         models: [true, false, false],
 
         color: [1, 1, 1],
@@ -95,8 +95,8 @@ function updateModel() {
         state.model.appendModel(Cube(state.color[0], state.color[1], state.color[2]), 0.3);
     }
     if (state.models[0]) {
-        console.log("append hollow cube");
-        state.model.appendModel(HollowCube(state.color[0], state.color[1], state.color[2]), 0);
+        console.log("append cylinder");
+        state.model.appendModel(Cylinder(state.color[0], state.color[1], state.color[2]), 0);
     } 
     if (state.models[2]) {
         console.log("append triangles");
@@ -110,11 +110,11 @@ function setListeners() {
         setDefaultState();
     });
 
-    document.getElementById("hollow-cube").oninput = () => {
-        state.models[0] = document.getElementById("hollow-cube").checked;
+    document.getElementById("cylinder").oninput = () => {
+        state.models[0] = document.getElementById("cylinder").checked;
         if (!state.models.includes(true)) {
             state.models[0] = true;
-            document.getElementById("hollow-cube").checked = true;
+            document.getElementById("cylinder").checked = true;
         }
         updateModel();
     };
@@ -123,7 +123,7 @@ function setListeners() {
         state.models[1] = document.getElementById("cube").checked;
         if (!state.models.includes(true)) {
             state.models[0] = true;
-            document.getElementById("hollow-cube").checked = true;
+            document.getElementById("cylinder").checked = true;
         }
         updateModel();
     };
@@ -132,7 +132,7 @@ function setListeners() {
         state.models[2] = document.getElementById("triangles").checked;
         if (!state.models.includes(true)) {
             state.models[0] = true;
-            document.getElementById("hollow-cube").checked = true;
+            document.getElementById("cylinder").checked = true;
         }
         updateModel();
     };
@@ -326,7 +326,6 @@ function main() {
     const flatShaderProgram = createProgram(gl, vertexShaderFlat, fragmentShaderFlat);
     const lightShaderProgram = createProgram(gl, vertexShaderLight, fragmentShaderLight);
     
-    // window.requestAnimationFrame(render);
     let old_time = 0;
     function render(new_time) {
         let time_difference = new_time - old_time;

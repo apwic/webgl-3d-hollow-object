@@ -1,29 +1,28 @@
 const HollowCube = (r, g, b) => {
     return new Model(
         "HOLLOW_CUBE",
-        //VERTICES
+        // VERTICES
         [
-            -0.5, -0.5, -0.5,       // 0
-            0.5, -0.5, -0.5,        // 1
-            0.5,  0.5, -0.5,        // 2
-            -0.5,  0.5, -0.5,       // 3
-            -0.5, -0.5,  0.5,       // 4
-            0.5, -0.5,  0.5,        // 5
-            0.5,  0.5,  0.5,        // 6
-            -0.5,  0.5,  0.5,       // 7
+            -0.8, -0.8, -0.8,     
+            0.8, -0.8, -0.8,      
+            0.8,  0.8, -0.8,      
+            -0.8,  0.8, -0.8,     
+            -0.8, -0.8,  0.8,     
+            0.8, -0.8,  0.8,      
+            0.8,  0.8,  0.8,      
+            -0.8,  0.8,  0.8,     
 
-            -0.4, -0.4, -0.4,       // 8
-            0.4, -0.4, -0.4,        // 9
-            0.4,  0.4, -0.4,        // 10
-            -0.4,  0.4, -0.4,       // 11
-            -0.4, -0.4,  0.4,       // 12
-            0.4, -0.4,  0.4,        // 13
-            0.4,  0.4,  0.4,        // 14
-            -0.4,  0.4,  0.4        // 15
+            -0.5, -0.5, -0.5,     
+            0.5, -0.5, -0.5,      
+            0.5,  0.5, -0.5,       
+            -0.5,  0.5, -0.5,      
+            -0.5, -0.5,  0.5,      
+            0.5, -0.5,  0.5,       
+            0.5,  0.5,  0.5,       
+            -0.5,  0.5,  0.5       
         ],
-        //INDICES
+        // INDICES
         [
-            // Front face
             0, 1, 8,
             1, 9, 8,
             1, 2, 9,
@@ -32,7 +31,7 @@ const HollowCube = (r, g, b) => {
             3, 11, 10,
             3, 0, 11,
             0, 8, 11,
-            // Back face
+
             5, 4, 13,
             4, 12, 13,
             4, 7, 12,
@@ -41,7 +40,7 @@ const HollowCube = (r, g, b) => {
             6, 14, 15,
             6, 5, 14,
             5, 13, 14,
-            // Side faces
+
             0, 4, 5,
             0, 5, 1,
             1, 5, 6,
@@ -262,6 +261,55 @@ const Cube = (r, g, b) => {
         //COLORS
         [r, g, b]
     )
+}
+
+const Cylinder = (r, g, b) => {
+    var vertices = [];
+
+    // Outer vertices
+    var r1 = 0.5; // outer radius
+    var r2 = 0.4; // inner radius
+    var height = 1; // height of cylinder
+
+    for (var i = 0; i <= 360; i += 10) {
+    var angle = i * Math.PI / 180;
+    vertices.push(r1 * Math.cos(angle), height / 2, r1 * Math.sin(angle)); // top outer vertex
+    vertices.push(r1 * Math.cos(angle), -height / 2, r1 * Math.sin(angle)); // bottom outer vertex
+    vertices.push(r2 * Math.cos(angle), height / 2, r2 * Math.sin(angle)); // top inner vertex
+    vertices.push(r2 * Math.cos(angle), -height / 2, r2 * Math.sin(angle)); // bottom inner vertex
+    }
+
+    var indices = [];
+
+    // Top and bottom faces
+    for (var i = 0; i < 36; i++) {
+    indices.push(i * 4 + 2, i * 4, (i + 1) * 4);
+    indices.push(i * 4 + 2, (i + 1) * 4, (i + 1) * 4 + 2);
+    indices.push(i * 4 + 3, i * 4 + 1, (i + 1) * 4 + 1);
+    indices.push(i * 4 + 3, (i + 1) * 4 + 1, (i + 1) * 4 + 3);
+    
+    // Connect the inside vertices to create the inner face
+    indices.push((i + 1) * 4, i * 4, i * 4 + 2);
+    indices.push((i + 1) * 4, i * 4 + 2, (i + 1) * 4 + 2);
+    indices.push((i + 1) * 4 + 1, i * 4 + 1, (i + 1) * 4 + 3);
+    indices.push(i * 4 + 1, (i + 1) * 4 + 3, (i + 1) * 4);
+    }
+
+    // Sides
+    for (var i = 0; i < 36; i++) {
+    indices.push(i * 4, (i + 1) * 4, i * 4 + 1);
+    indices.push((i + 1) * 4, (i + 1) * 4 + 1, i * 4 + 1);
+    indices.push(i * 4 + 2, i * 4 + 3, (i + 1) * 4 + 2);
+    indices.push((i + 1) * 4 + 3, (i + 1) * 4 + 2, i * 4 + 2);
+    }
+
+    return new Model(
+        "CYLINDER",
+        vertices,
+        indices,
+        [r, g, b]
+    );
+
 }
 
 const side = 1.2;

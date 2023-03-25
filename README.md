@@ -8,7 +8,7 @@ Untuk menjalankan program, buka file `index.html` di browser web yang mendukung 
 ### **Model**
 Pengguna dapat memilih model yang ingin ditampilkan dengan memilih salah satu dari *checkboxes* berikut:
 
-- Hollow Cube
+- Cylinder
 - Cube
 - Triangles
 
