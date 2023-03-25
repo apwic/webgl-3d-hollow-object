@@ -49,8 +49,8 @@ function updateUI() {
 function setDefaultState() {
     state = {
         mousedown: false,
-        model: Cylinder(1, 1, 1),
-        models: [true, false, false],
+        model: Cube(1, 1, 1),
+        models: [false, true, false],
 
         color: [1, 1, 1],
 
@@ -92,11 +92,11 @@ function updateModel() {
     state.model.reset();
     if (state.models[1]) {
         console.log("append cube");
-        state.model.appendModel(Cube(state.color[0], state.color[1], state.color[2]), 0.3);
+        state.model.appendModel(Cube(state.color[0], state.color[1], state.color[2]), 0);
     }
     if (state.models[0]) {
         console.log("append cylinder");
-        state.model.appendModel(Cylinder(state.color[0], state.color[1], state.color[2]), 0);
+        state.model.appendModel(Cylinder(state.color[0], state.color[1], state.color[2]), 0.3);
     } 
     if (state.models[2]) {
         console.log("append triangles");
@@ -289,9 +289,11 @@ function setViewMatrix() {
 
     // change the zoom level
     if (state.projection == "orth") {
-        Vmatrix[14] = Vmatrix[14];
+        Vmatrix[14] = Vmatrix[14] + 0.5;
+    } else if (state.projection == "persp"){
+        Vmatrix[14] = Vmatrix[14] - 1.375;
     } else {
-        Vmatrix[14] = Vmatrix[14] - 3;
+        Vmatrix[14] = Vmatrix[14] - 1;
     }
     return Vmatrix;
 }
@@ -357,7 +359,7 @@ function main() {
         
         let proj_matrix;
         if (state.projection == "persp") {
-            proj_matrix = getPerspectiveProjection(45, canvas.width / canvas.height, 1, 100);
+            proj_matrix = getPerspectiveProjection(45, canvas.width / canvas.height, 0.1, 100);
         } else if (state.projection == "orth") {
             proj_matrix = getOrthographicProjection(canvas.width / canvas.height);
         } else { // use oblique projection
