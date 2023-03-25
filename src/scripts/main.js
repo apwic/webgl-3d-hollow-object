@@ -288,7 +288,11 @@ function setViewMatrix() {
     Vmatrix = multiply(Vmatrix, translationMatrix(0, 0, state.view.radius));
 
     // change the zoom level
-    Vmatrix[14] = Vmatrix[14] - 3;
+    if (state.projection == "orth") {
+        Vmatrix[14] = Vmatrix[14] + 0.4;
+    } else {
+        Vmatrix[14] = Vmatrix[14] - 3;
+    }
     return Vmatrix;
 }
 
