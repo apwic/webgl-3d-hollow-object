@@ -54,7 +54,7 @@ function setDefaultState() {
 
         color: [1, 1, 1],
 
-        projection: "persp",
+        projection: "orth",
 
         transform: {
             scale: {
@@ -289,7 +289,7 @@ function setViewMatrix() {
 
     // change the zoom level
     if (state.projection == "orth") {
-        Vmatrix[14] = Vmatrix[14] + 0.4;
+        Vmatrix[14] = Vmatrix[14];
     } else {
         Vmatrix[14] = Vmatrix[14] - 3;
     }
